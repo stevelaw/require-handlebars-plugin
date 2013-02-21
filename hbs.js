@@ -15,7 +15,7 @@ define([
 //>>excludeEnd('excludeHbs')
 ], function (
 //>>excludeStart('excludeHbs', pragmas.excludeHbs)
- Handlebars, _, precompile, JSON
+ Handlebars, JSON
 //>>excludeEnd('excludeHbs')
 ) {
 //>>excludeStart('excludeHbs', pragmas.excludeHbs)

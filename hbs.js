@@ -31,7 +31,6 @@ define([
         devStyleDirectory = "/styles/",
         buildStyleDirectory = "/demo-build/styles/",
         helperDirectory = "template/helpers/",
-        i18nDirectory = "template/i18n/",
         buildCSSFileName = "screen.build.css";
 
     Handlebars.registerHelper('$', function() {

@@ -11,11 +11,11 @@
 define: false, process: false, window: false */
 define([
 //>>excludeStart('excludeHbs', pragmas.excludeHbs)
-'./handlebars', './hbs/json2'
+'./handlebars', './hbs/i18nprecompile', './hbs/json2'
 //>>excludeEnd('excludeHbs')
 ], function (
 //>>excludeStart('excludeHbs', pragmas.excludeHbs)
- Handlebars, JSON
+ Handlebars, precompile, JSON
 //>>excludeEnd('excludeHbs')
 ) {
 //>>excludeStart('excludeHbs', pragmas.excludeHbs)
@@ -31,6 +31,7 @@ define([
         devStyleDirectory = "/styles/",
         buildStyleDirectory = "/demo-build/styles/",
         helperDirectory = "template/helpers/",
+        i18nDirectory = "template/i18n/",
         buildCSSFileName = "screen.build.css";
 
     Handlebars.registerHelper('$', function() {
@@ -143,7 +144,7 @@ define([
                 partialDeps = [];
 
             function recursiveNodeSearch( statements, res ) {
-              _(statements).forEach(function ( statement ) {
+              statements.forEach(function ( statement ) {
                 if ( statement && statement.type && statement.type === 'partial' ) {
                     res.push(statement.partialName.name);
                 }
@@ -207,7 +208,7 @@ define([
               var  newprefix = "", flag = false;
 
               // loop through each statement
-              _(statements).forEach(function ( statement ) {
+              statements.forEach(function ( statement ) {
                 var parts, part, sideways;
 
                 // if it's a mustache block
@@ -229,7 +230,7 @@ define([
 
                   // grab the params
                   if ( statement.params && typeof Handlebars.helpers[statement.id.string] === 'undefined') {
-                    _(statement.params).forEach(function(param) {
+                    statement.params.forEach(function(param) {
                       if ( _(paramsWithoutParts).contains(param.original) 
                          || param instanceof Handlebars.AST.StringNode 
                         || param instanceof Handlebars.AST.IntegerNode
@@ -341,7 +342,7 @@ define([
                         // In dev mode in the browser
                         if ( require.isBrowser && ! config.isBuild ) {
                           head = document.head || document.getElementsByTagName('head')[0];
-                          _(metaObj.styles).forEach(function (style) {
+                          metaObj.styles.forEach(function (style) {
                             if ( !styleMap[style] ) {
                               linkElem = document.createElement('link');
                               linkElem.href = config.baseUrl + devStyleDirectory + style + '.css';
@@ -356,7 +357,7 @@ define([
                         else if ( config.isBuild ) {
                           (function(){
                             var fs  = require.nodeRequire('fs'),
-                                str = _(metaObj.styles).map(function (style) {
+                                str = metaObj.styles.map(function (style) {
                                   if (!styleMap[style]) {
                                     styleMap[style] = true;
                                     return "@import url("+style+".css);\n";
